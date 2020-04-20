@@ -10,7 +10,6 @@ An application for easily download video content from Crunchyroll combining yout
 
  - Choose between softsub or hardsub (no transcoding!)
  - Choose as you want to download: individual episode, several episodies or full series
- - Choose which quality you want to get (from 240p to 1080p)
  - On softsubbing, attach only one subtitle track or all subtitles track
  - On softsubbing, attach your own fonts to the mkv file
  - On softsubbing, warn if there are fonts missing
