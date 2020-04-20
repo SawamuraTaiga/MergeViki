@@ -1,11 +1,10 @@
 #!/bin/bash
 
-# Title:       MergeCrunch
-# Description: Download from Crunchyroll and generate a pretty mkv file with all video, subtitles and fonts merged.
-# Author:      José Ángel Pastrana Padilla
-# Email:       japp0005@red.ujaen.es
-# Last update: 2019-03-20
-# Revision:    24
+# Title:       MergeVIKI
+# Description: Download from viki and generate a pretty mkv file with all video, subtitles and fonts merged.
+# Author:      Derek Diniz
+# Email:       otaku.megatron@gmail.com
+# Last update: 2020-04-20
 
 # DEPENDENCIES:
 
@@ -32,57 +31,47 @@ COOKIES="" # Default: "" (Means not using previous cookies).
 # By command line, it can be actived by "-x" or "--crc32"
 CRC32="" # Default: "" (Means disabled). Change to "YES" for always active
 
-# This argument sets video resolution.
-# By command line, it is "-f value" or "--format value".
-# Default: "" (Means best resolution).
-# Change to other value as "worst", "240p", "360p", "480p", "720p", "1080p", "best".
-FORMAT=""
-
 # This argument sets user agent.
 # By command line, it is, for example, "--ua 'Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0'"
 USER_AGENT=""
 
 # Only the language specified on SUB_DEFAULT (-s) will be merged
-# By command line, it is, for example, "--one -s esES"
+# By command line, it is, for example, "--one -s pt"
 ONE_SUBTITLE=""  # Default: "" (Means disabled). Change to "YES" for always active
 
 # Ship hard subtitle specified by SUB_DEFAULT (-s). Implies ONE_SUBTITLE
-# By command line, it is, for example, "--hard -s esES"
+# By command line, it is, for example, "--hard -s pt"
 HARD_SUBTITLE="" # Default: "" (Means disabled). Change to "YES" for always active
 
 # For further references: ISO 639 and mkvmerge --list-languages
 # This argument sets default track subtitle if your player doesn't set this field.
 # By command line, use "-s value" or "--sub_default value"
 # Default: "" (Means english).
-# Value to "enUS" forces American English.
-# Value to "esES" forces European Spanish.
-# Value to "esLA" forces American Spanish.
-# Value to "frFR" forces Français.
-# Value to "itIT" forces Italiano.
-# Value to "ptBR" forces Brazilian Português.
-# Value to "ptPT" forces European Português.
-# Value to "deDE" forces Deutsch.
-# Value to "arME" forces العربية.
-# Value to "trTR" forces Türkçe
-# Value to "ruRU" forces Русский.
-# Value to "jaJP" forces 日本語.
+# Value to "en" forces American English.
+# Value to "es" forces European Spanish.
+# Value to "fr" forces Français.
+# Value to "it" forces Italiano.
+# Value to "pt" forces Brazilian Português.
+# Value to "de" forces Deutsch.
+# Value to "ar" forces العربية.
+# Value to "tr" forces Türkçe
+# Value to "ru" forces Русский.
+# Value to "jp" forces 日本語.
 SUB_DEFAULT=""
 
 # This argument spoofs X-Forwarded-For using a fake IP
 # By command line, it is "-g US" or "--geo enUS"
 # Default: "" (Means your actual IP country)
-# Value to "enUS" forces USA.
-# Value to "esES" forces España.
-# Value to "esLA" forces México.
-# Value to "frFR" forces France.
-# Value to "itIT" forces Italia.
-# Value to "ptBR" forces Brasil.
-# Value to "ptPT" forces Brasil.
-# Value to "deDE" forces Deutschland.
-# Value to "arME" forces العربية.
-# Value to "trTR" forces Türkiye
-# Value to "ruRU" forces Россия.
-# Value to "jaJP" forces 日本.
+# Value to "en" forces USA.
+# Value to "es" forces España.
+# Value to "fr" forces France.
+# Value to "it" forces Italia.
+# Value to "pt" forces Brasil.
+# Value to "de" forces Deutschland.
+# Value to "ar" forces العربية.
+# Value to "tr" forces Türkiye
+# Value to "ru" forces Россия.
+# Value to "ja" forces 日本.
 GEO_COUNTRY="" # Default: "" (Means your actual IP country)
 
 # NEED THIS VARIABLES...
@@ -90,35 +79,12 @@ TMP_DIR="/tmp/${$}"
 DEST_DIR="$(pwd)"
 declare -A FORMAT_SUP
 FORMAT_SUP["worst"]="worst[format_id !*= hardsub]"
-FORMAT_SUP["240p"]="best[format_id !*= hardsub][height=240]"
-FORMAT_SUP["360p"]="best[format_id !*= hardsub][height=360]"
-FORMAT_SUP["480p"]="best[format_id !*= hardsub][height=480]"
-FORMAT_SUP["720p"]="best[format_id !*= hardsub][height=720]"
-FORMAT_SUP["1080p"]="best[format_id !*= hardsub][height=1080]"
-FORMAT_SUP["240"]="best[format_id !*= hardsub][height=240]"
-FORMAT_SUP["360"]="best[format_id !*= hardsub][height=360]"
-FORMAT_SUP["480"]="best[format_id !*= hardsub][height=480]"
-FORMAT_SUP["720"]="best[format_id !*= hardsub][height=720]"
-FORMAT_SUP["1080"]="best[format_id !*= hardsub][height=1080]"
 FORMAT_SUP["best"]="best[format_id !*= hardsub]"
 FORMAT_SUP["hard-worst"]="worst[format_id *= hardsub]"
-FORMAT_SUP["hard-240p"]="best[format_id *= hardsub][height=240]"
-FORMAT_SUP["hard-360p"]="best[format_id *= hardsub][height=360]"
-FORMAT_SUP["hard-480p"]="best[format_id *= hardsub][height=480]"
-FORMAT_SUP["hard-720p"]="best[format_id *= hardsub][height=720]"
-FORMAT_SUP["hard-1080p"]="best[format_id *= hardsub][height=1080]"
-FORMAT_SUP["hard-240"]="best[format_id *= hardsub][height=240]"
-FORMAT_SUP["hard-360"]="best[format_id *= hardsub][height=360]"
-FORMAT_SUP["hard-480"]="best[format_id *= hardsub][height=480]"
-FORMAT_SUP["hard-720"]="best[format_id *= hardsub][height=720]"
-FORMAT_SUP["hard-1080"]="best[format_id *= hardsub][height=1080]"
 FORMAT_SUP["hard-best"]="best[format_id *= hardsub]"
 declare -A SUB_LANG
-SUB_LANG["enUS","tag"]="eng"
-SUB_LANG["enUS","cty"]="English (USA)"
-SUB_LANG["enUS","geo"]="US"
+SUB_LANG["en","tag"]="eng"
 SUB_LANG["esES","tag"]="spa"
-SUB_LANG["esES","cty"]="Español (España)"
 SUB_LANG["esES","geo"]="ES"
 SUB_LANG["esLA","tag"]="spa"
 SUB_LANG["esLA","cty"]="Español (México)"
@@ -131,9 +97,8 @@ SUB_LANG["itIT","cty"]="Italiano (Italia)"
 SUB_LANG["itIT","geo"]="IT"
 SUB_LANG["ptBR","tag"]="por" # Should be bzs according to ISO-639-3, but mkvmerge only supports ISO-639-1/2
 SUB_LANG["ptBR","cty"]="Português (Brasil)"
-SUB_LANG["ptBR","geo"]="BR"
-SUB_LANG["ptPT","tag"]="por"
-SUB_LANG["ptPT","cty"]="Português (Portugal)"
+SUB_LANG["pt","geo"]="BR"
+SUB_LANG["pt","cty"]="Português (Portugal)"
 SUB_LANG["ptPT","geo"]="PT"
 SUB_LANG["deDE","tag"]="ger"
 SUB_LANG["deDE","cty"]="Deutsch (Deutschland)"
@@ -191,7 +156,7 @@ trap handlesignal SIGHUP SIGINT SIGTERM
 # CHECKING...
 if [ ${#} -eq 0 ]
 then
-	echo "Error. MergeCrunch needs a input URL as parameter."
+	echo "Error. MergeViki needs a input URL as parameter."
 	echo "Syntaxis:"
 	echo "	${0} -i URL [-f format] [-s force] [-c] [-o output]"
 	exit -1
@@ -360,7 +325,7 @@ then
 	WGET_USER_AGENT="--user-agent \"${USER_AGENT}\""
 	USER_AGENT="--user-agent '${USER_AGENT}'"
 else
-	yellowcon "Warning. Crunchyroll will enable future restrictions soon. If there is any problem while downloading, try to specify an user-agent (for example, --ua 'Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0'). More info at README.md"
+	yellowcon "Warning. viki will enable future restrictions soon. If there is any problem while downloading, try to specify an user-agent (for example, --ua 'Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0'). More info at README.md"
 fi
 if [ -n "${ONE_SUBTITLE}" ]
 then
@@ -402,14 +367,14 @@ then
 	while read -r line
 	do
 		c=$((c+1))
-		inputs+=("http://www.crunchyroll.com${line}")
+		inputs+=("https://www.viki.com${line}")
 		if [ -z "${SELECTION}" ] || [ -n "$(echo -e "${SELECTION// /\\n}" | grep "^${c}$")" ]
 		then
 			echo -en "\e[1m[Selected] \e[42m"
 		else
 			echo -n "[Not Selected] "
 		fi
-		echo -e "ID: ${c}, URL: http://www.crunchyroll.com${line}\e[0m"
+		echo -e "ID: ${c}, URL: https://www.viki.com/${line}\e[0m"
 	done <<< "$(tac "${TMP_FILE}" | grep -A1 --no-group-separator 'portrait-element block-link titlefix episode' | grep -v 'portrait-element block-link titlefix episode' | cut -d'"' -f2)"
 else
 	greencon "[Analyze] INPUT URL IS A SIMPLE URL. ENQUEUING..."
@@ -421,7 +386,6 @@ else
 	handlesignal "Exitting due to an error in input URL..."
 fi
 rm -r "${TMP_FILE}"
-
 # LOOP FOR PLAYLIST
 c=0
 for INPUT in "${inputs[@]}"
@@ -432,29 +396,25 @@ do
 	(
 	# A line extra for to format console output :P
 	echo 
-
 	# Prepare temp dir
 	mkdir -p "${TMP_DIR}"
 	cd "${TMP_DIR}"
-
 	# Get Crunchyroll file
 	greencon "STEP 0. QUEUE INPUT URL #${c}."
 	echo "${INPUT}"
-	greencon "STEP 1. GET CRUNCHYROLL STREAMING DOWNLOAD."
+	greencon "STEP 1. GET VIKI STREAMING DOWNLOAD."
 	echo youtube-dl --no-warnings --no-continue --no-part --all-subs ${USERNAME} ${PASSWORD} ${COOKIES} ${USER_AGENT} ${FORMAT} ${HEADER} ${GEO_COUNTRY} ${INPUT}
 	eval youtube-dl --no-warnings --no-continue --no-part --all-subs ${USERNAME} ${PASSWORD} ${COOKIES} ${USER_AGENT} ${FORMAT} ${HEADER} ${GEO_COUNTRY} ${INPUT}
 	if [ ${?} -ne 0 ]
 	then
 		handlesignal "Failed to get streaming! Exitting..."
 	fi
-
 	# Prepare output filename
 	DL_NAME="$(ls *.flv *.mp4 2>/dev/null)"
 	if [ -z "${OUTPUT}" ]
 	then
 		OUTPUT="${DEST_DIR}/${DL_NAME%-*}.mkv"
 	fi
-
 	# Prepare subtitles downloaded for will merge to output file
 	greencon "STEP 2. CHECKING AVAILABLE SUBTITLES."
 	if ls *.ass >/dev/null 2>/dev/null
@@ -487,7 +447,6 @@ do
 	else
 		yellowcon "Not found any subtitle track."
 	fi
-
 	# Searching for fonts attachments
 	greencon "STEP 3. CHECKING AVAILABLES ATTACHMENT FONTS TEXT."
 	if ls *.ass >/dev/null 2>/dev/null
@@ -503,7 +462,6 @@ do
 			        fonts+=("${line}")
 			done <<< "$(cat "${each}" | grep "^Style:" | cut -d"," -f2 | sort -u)"
 		done
-
 		while read -r line
 		do
 			queryfc="$(fc-match "${line}")"
@@ -547,4 +505,3 @@ do
 	)
 	fi
 done
-
