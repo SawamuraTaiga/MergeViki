@@ -25,7 +25,7 @@ In this section, I will illustrate how to use the application with examples:
 Input URL using argument -i. Episode will be downloaded with max resolution in the current directory.
 
 ```sh
-./mergeviki.sh -i URL_CRUNCH_HERE
+./mergeviki.sh -i URL_VIKI_HERE
 ```
 
 **Playlist selection (append # character in input URL):**
@@ -38,7 +38,7 @@ For playlist selection, you must append the # character in input URL. After, use
 
 Example #1. Select IDs items from 12 to 20.
 ```sh
-./mergeviki.sh -i URL_PLAYLIST_CRUNCH_HERE#12-20
+./mergeviki.sh -i URL_PLAYLIST_VIKI_HERE#12-20
 ```
 
 Example #2. Select ID item 5.
@@ -72,7 +72,7 @@ In this example, CRC32 will be calculated and stored in the filename.
 Using a preferred language, you set a default subtitle track in your mkv. In this example, set spanish subtitle track as preferred. If you append the --one argument, then esES subtitle track will merged exclusively.
 
 ```sh
-./mergecrunch.sh -i URL_CRUNCH_HERE -x -f 720p --one -s esES
+./mergeviki.sh -i URL_VIKI_HERE -x -f 720p --one -s esES
 ```
 
 Language | Description
