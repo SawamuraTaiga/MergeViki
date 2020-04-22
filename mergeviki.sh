@@ -15,11 +15,11 @@
 
 # DEFAULT PARAMETERS.
 
-# This argument sets a premium username Crunchyroll account.
+# This argument sets a premium username viki account.
 # By command line, it is "-u username" or "--username username"
 USERNAME="" # Default: "" (Means guest session).
 
-# This argument sets a password for your username Crunchyroll account.
+# This argument sets a password for your username viki account.
 # By command line, it is "-p password" or "--password password"
 PASSWORD="" # Default: "" (Means guest session if username is not specific).
 
@@ -47,31 +47,23 @@ HARD_SUBTITLE="" # Default: "" (Means disabled). Change to "YES" for always acti
 # This argument sets default track subtitle if your player doesn't set this field.
 # By command line, use "-s value" or "--sub_default value"
 # Default: "" (Means english).
-# Value to "en" forces American English.
-# Value to "es" forces European Spanish.
-# Value to "fr" forces Français.
-# Value to "it" forces Italiano.
-# Value to "pt" forces Brazilian Português.
-# Value to "de" forces Deutsch.
-# Value to "ar" forces العربية.
-# Value to "tr" forces Türkçe
-# Value to "ru" forces Русский.
-# Value to "jp" forces 日本語.
+# Value to "eng" forces American English.
+# Value to "spa" forces European Spanish.
+# Value to "ita" forces Italiano.
+# Value to "por" forces Brazilian Português.
+# Value to "rus" forces Русский.
+# Value to "jap" forces 日本語.
 SUB_DEFAULT=""
 
 # This argument spoofs X-Forwarded-For using a fake IP
 # By command line, it is "-g US" or "--geo enUS"
 # Default: "" (Means your actual IP country)
-# Value to "en" forces USA.
-# Value to "es" forces España.
-# Value to "fr" forces France.
-# Value to "it" forces Italia.
-# Value to "pt" forces Brasil.
-# Value to "de" forces Deutschland.
-# Value to "ar" forces العربية.
-# Value to "tr" forces Türkiye
-# Value to "ru" forces Россия.
-# Value to "ja" forces 日本.
+# Value to "eng" forces USA.
+# Value to "spa" forces España.
+# Value to "ita" forces Italia.
+# Value to "por" forces Brasil.
+# Value to "rus" forces Россия.
+# Value to "jap" forces 日本.
 GEO_COUNTRY="" # Default: "" (Means your actual IP country)
 
 # NEED THIS VARIABLES...
@@ -83,10 +75,10 @@ FORMAT_SUP["best"]="best[format_id !*= hardsub]"
 FORMAT_SUP["hard-worst"]="worst[format_id *= hardsub]"
 FORMAT_SUP["hard-best"]="best[format_id *= hardsub]"
 declare -A SUB_LANG
-SUB_LANG["ptBR","tag"]="por" # Should be bzs according to ISO-639-3, but mkvmerge only supports ISO-639-1/2
-SUB_LANG["ptBR","cty"]="Português (Brasil)"
-SUB_LANG["pt","geo"]="BR"
-SUB_LANG["pt","cty"]="Português (Portugal)"
+SUB_LANG["por","tag"]="por" # Should be bzs according to ISO-639-3, but mkvmerge only supports ISO-639-1/2
+SUB_LANG["por","cty"]="Português (Brasil)"
+SUB_LANG["por","geo"]="BR"
+SUB_LANG["por","cty"]="Português (Portugal)"
 SUB_LANG["deDE","tag"]="ger"
 SUB_LANG["deDE","cty"]="Deutsch (Deutschland)"
 SUB_LANG["deDE","geo"]="DE"
@@ -96,11 +88,11 @@ SUB_LANG["arME","geo"]="ME"
 SUB_LANG["trTR","tag"]="tur"
 SUB_LANG["trTR","cty"]="Türkçe (Türkiye)"
 SUB_LANG["trTR","geo"]="TR"
-SUB_LANG["ruRU","tag"]="rus"
-SUB_LANG["ruRU","cty"]="Русский (Россия)"
-SUB_LANG["ruRU","geo"]="RU"
-SUB_LANG["jaJP","tag"]="jap"
-SUB_LANG["jaJP","cty"]="日本語 (日本)"
+SUB_LANG["rus","tag"]="rus"
+SUB_LANG["rus","cty"]="Русский (Россия)"
+SUB_LANG["rus","geo"]="RU"
+SUB_LANG["jap","tag"]="jap"
+SUB_LANG["jap","cty"]="日本語 (日本)"
 SUB_LANG["jaJP","geo"]="JP"
 
 # Turn off substitution history
@@ -275,7 +267,7 @@ then
 	WGET_COOKIES="--load-cookies \"${COOKIES}\""
 	COOKIES="--cookies '${COOKIES}'"
 else
-	yellowcon "Warning. Crunchyroll will enable future restrictions soon. If there is any problem while downloading, try to specify a cookies file (for example, -c cookies.txt). More info at README.md"
+	yellowcon "Warning. viki will enable future restrictions soon. If there is any problem while downloading, try to specify a cookies file (for example, -c cookies.txt). More info at README.md"
 fi
 if [ -n "${HARD_SUBTITLE}" ] && [ -z "${SUB_DEFAULT}" ]
 then
@@ -361,7 +353,7 @@ then
 		else
 			echo -n "[Not Selected] "
 		fi
-		echo -e "ID: ${c}, URL: https://www.viki.com/${line}\e[0m"
+		echo -e "ID: ${c}, URL: https://www.viki.com${line}\e[0m"
 	done <<< "$(tac "${TMP_FILE}" | grep -A1 --no-group-separator 'portrait-element block-link titlefix episode' | grep -v 'portrait-element block-link titlefix episode' | cut -d'"' -f2)"
 else
 	greencon "[Analyze] INPUT URL IS A SIMPLE URL. ENQUEUING..."
